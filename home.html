@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Home Page</title>
+
+    <!-- Google Font for handwriting in Sticky Notes -->
+    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+<div class="home-container">
+
+    <!-- Header -->
+    <header class="home-header">
+        <div>
+            <h1>Hello Teacher <span id="teacher-name"></span></h1>
+            <p class="teacher-subject">
+                Subject: <span id="teacher-subject"></span>
+            </p>
+        </div>
+
+        <button id="logout-btn">Logout</button>
+    </header>
+
+    <main class="home-main">
+
+        <!-- 1. Students list + search + dropdown -->
+        <section class="students-section">
+            <h2>My Students</h2>
+
+            <div class="search-bar">
+                <label for="student-search">Search student:</label>
+                <input type="text" id="student-search" placeholder="Type a student name">
+            </div>
+
+            <div class="selected-student-box">
+                Selected student: <span id="selected-student">—</span>
+            </div>
+
+            <div class="students-dropdown">
+                <ul id="students-list"></ul>
+            </div>
+        </section>
+
+        <!-- 2. Upcoming Classes – cards -->
+        <section class="calendar-section">
+            <h2>Upcoming Classes</h2>
+            <div id="stack" class="stack-container"></div>
+        </section>
+
+        <!-- 3. General Notes – Sticky Notes -->
+        <section class="notes-section">
+            <h2>General Notes</h2>
+
+            <div class="add-note-box">
+                <input type="text" id="new-note-input" placeholder="Type a new note">
+                <button id="add-note-btn">Add</button>
+            </div>
+
+            <ul id="notes-list"></ul>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="home.js"></script>
+</body>
+</html>
