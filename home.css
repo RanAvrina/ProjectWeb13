@@ -12,7 +12,7 @@ body {
     margin: 0 auto;
     padding: 20px;
 }
-/* ===== Header ===== */
+/*  Header  */
 
 .home-header {
     display: flex;
@@ -406,8 +406,8 @@ body {
     color: #334155;
 }
 
-/* עוטף וירטואלי – כל השדות */
-.students-section #new-student-name,
+ /* new student fields */
+ .students-section #new-student-name, 
 .students-section #new-student-phone,
 .students-section #new-student-email,
 .students-section #new-student-grade {
@@ -422,7 +422,7 @@ body {
     transition: 0.2s;
 }
 
-/* Focus */
+/* Focus - new student fields */
 .students-section #new-student-name:focus,
 .students-section #new-student-phone:focus,
 .students-section #new-student-email:focus,

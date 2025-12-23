@@ -32,6 +32,7 @@
     <main class="home-main">
 
         <!-- 1. Students list + search + dropdown -->
+
         <section class="students-section">
             <h2>My Students</h2>
 
@@ -50,14 +51,15 @@
             </div>
             <div class="add-student-box">
   <h3>Add Student</h3>
+        <form>
+            <input id="new-student-name" type="text" placeholder="Full name" required pattern="^[A-Za-z\u0590-\u05FF ]+$" title="Name can contain letters and spaces only">
+            <input id="new-student-phone" type="tel" placeholder="Phone (05XXXXXXXX)" required pattern="^05\d{8}$" title="Phone must be 10 digits and start with 05">
+            <input id="new-student-email" type="email" placeholder="Email" required title="Please enter a valid email address">
+            <input id="new-student-grade" type="text" placeholder="Grade / Level" required>
+            <button id="add-student-btnadd-student-btn" type="submit">Add Student</button>
+        </form>
+        </div>
 
-  <input id="new-student-name" type="text" placeholder="Full name" />
-  <input id="new-student-phone" type="text" placeholder="Phone" />
-  <input id="new-student-email" type="text" placeholder="Email" />
-  <input id="new-student-grade" type="text" placeholder="Grade / Level" />
-  <button id="add-student-btn" type="button">Add Student</button>
-
-</div>
 
         </section>
         <!-- 2. Upcoming Classes – cards -->

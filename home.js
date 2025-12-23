@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var STUDENTS_DB_KEY = "students_db";
+   
+    //  1. LOGIN CHECK 
 
-
-    // -------------------- 1. LOGIN CHECK --------------------
     var loggedUser = localStorage.getItem("loggedUser");
-    if (!loggedUser) {
+    if (!loggedUser) {// checking if there is logged user
         window.location.href = "login.html";
         return;
     }
@@ -12,20 +11,21 @@ document.addEventListener("DOMContentLoaded", function () {
     var teacherNameSpan = document.getElementById("teacher-name");
     var teacherSubjectSpan = document.getElementById("teacher-subject");
 
-    if (teacherNameSpan) teacherNameSpan.textContent = " " + loggedUser;
+    if (teacherNameSpan) teacherNameSpan.textContent = " " + loggedUser; // takes the thecher name to write on the top
     if (teacherSubjectSpan) teacherSubjectSpan.textContent = "Mathematic";
 
 
-    // -------------------- 2. STUDENTS SECTION --------------------
+    //  2. STUDENTS SECTION
 
     // Default list (used only if storage is empty)
+    var students_key = "students_db";
     var students = [];
 
     var studentsListEl = document.getElementById("students-list");
     var studentSearchInput = document.getElementById("student-search");
 
     // -------- Students: storage --------
-    function initStudentsData() {
+    function initStudentsData() {// load students from current students list
         var stored;
         try {
             stored = JSON.parse(localStorage.getItem("students_db") || "null");
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         studentsListEl.innerHTML = "";
     }
 
-    function filterStudents(searchText) {
+    function filterStudents(searchText) {//filter students during search
         var lower = String(searchText || "").toLowerCase();
         var out = [];
         for (var i = 0; i < students.length; i++) {
@@ -57,19 +57,18 @@ document.addEventListener("DOMContentLoaded", function () {
         return out;
     }
 
-    // מאזין לכפתור "Add"
     function initAddStudentForm() {
-        const btn = document.getElementById("add-student-btn"); // ✅ זה חייב להיות ככה
+        const btn = document.getElementById("add-student-btn"); 
         if (!btn) return;
 
-        btn.addEventListener("click", addStudentFromForm);
+        btn.addEventListener("click", addStudentFromForm);//connecting the add button
     }
 
     function addStudentFromForm() {
-        const nameEl = document.getElementById("new-student-name");  // ✅
-        const emailEl = document.getElementById("new-student-email"); // ✅
-        const phoneEl = document.getElementById("new-student-phone"); // ✅
-        const gradeEl = document.getElementById("new-student-grade"); // ✅
+        const nameEl = document.getElementById("new-student-name");  
+        const emailEl = document.getElementById("new-student-email"); 
+        const phoneEl = document.getElementById("new-student-phone"); 
+        const gradeEl = document.getElementById("new-student-grade"); 
         const name = (nameEl?.value || "").trim();
         const email = (emailEl?.value || "").trim();
         const phone = (phoneEl?.value || "").trim();
@@ -77,29 +76,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!name) return;
 
-        // הוספה לרשימה אם לא קיים
+        // add student if he doesnt exist
         if (!studentExists(name)) {
             students.push(name);
-            writeJson(STUDENTS_DB_KEY, students);
+            writeJson(students_key, students); // add to local storage
         }
 
-        // שמירת פרופיל לתלמיד
+        // saving profile
         saveStudentProfile(name, { name, email, phone, grade });
 
-        // עדכון UI מיידי
+        // update list after adding
         renderStudents(studentSearchInput.value || "");
 
-        // ניקוי שדות
+        // clear fields
         if (nameEl) nameEl.value = "";
         if (emailEl) emailEl.value = "";
         if (phoneEl) phoneEl.value = "";
         if (gradeEl) gradeEl.value = "";
     }
 
-    function studentExists(name) {
-        const n = name.toLowerCase();
-        return students.some(s => String(s).toLowerCase() === n);
-    }
+    function studentExists(name) {// checks if the student name already exists
+    const n = name.toLowerCase();
+
+    return students.some(function (s) {
+        return String(s).toLowerCase() === n;
+    });
+}
 
     function saveStudentProfile(name, profile) {
         localStorage.setItem("student_profile_" + name, JSON.stringify(profile));
@@ -265,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return isNaN(d.getTime()) ? null : d;
     }
 
-    function getUpcomingFiveLessons() {
+    function getUpcomingFiveLessons() {//show only 5 upcoming lessons
         var now = new Date();
         var all = getAllLessonsUnified();
 
