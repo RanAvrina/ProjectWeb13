@@ -58,12 +58,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // מאזין לכפתור "Add"
-    function initAddStudentForm() {
-        const btn = document.getElementById("add-student-btn"); // ✅ זה חייב להיות ככה
-        if (!btn) return;
+   function initAddStudentForm() {
+  const form = document.getElementById("add-student-form");
+  if (!form) return;
 
-        btn.addEventListener("click", addStudentFromForm);
-    }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // מפעיל את הולידציה של HTML (כולל הודעות)
+    if (!form.reportValidity()) return;
+
+    addStudentFromForm(); // ממשיך רק אם הכל תקין
+  });
+}
+
 
     function addStudentFromForm() {
         const nameEl = document.getElementById("new-student-name");  // ✅

@@ -1,22 +1,29 @@
+// student.js
+
 // ===============================
 // BASIC STUDENT DATA
 // ===============================
-
-
 var studentName = localStorage.getItem("selectedStudent") || "Student Name";
 document.getElementById("studentName").textContent = studentName;
 
 var goalsKey = "goals_" + studentName;
 var summariesKey = "summaries_" + studentName;
-var filesKey = "files_" + studentName;
-
 
 // ===============================
-// SCROLL
+// UI MESSAGES (no browser alerts)
 // ===============================
-function scrollToSection(id) {
-  var el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth" });
+function showMsg(el, text, type) {
+  if (!el) return;
+  el.textContent = text;
+  el.className = "form-msg " + type; // "error" / "success"
+  el.style.display = "block";
+}
+
+function hideMsg(el) {
+  if (!el) return;
+  el.style.display = "none";
+  el.textContent = "";
+  el.className = "form-msg";
 }
 
 // ===============================
@@ -97,9 +104,7 @@ function openEditStudent() {
   var saveBtn = document.getElementById("edit-save");
   var cancelBtn = document.getElementById("edit-cancel");
 
-  var profile = JSON.parse(
-    localStorage.getItem("student_profile_" + studentName) || "{}"
-  );
+  var profile = JSON.parse(localStorage.getItem("student_profile_" + studentName) || "{}");
 
   emailEl.value = profile.email || "";
   phoneEl.value = profile.phone || "";
@@ -112,7 +117,9 @@ function openEditStudent() {
   };
 
   saveBtn.onclick = function () {
-    // Save without confirmation modal, just close after saving
+    var form = document.getElementById("edit-student-form");
+    if (form && !form.reportValidity()) return;
+
     var updated = {
       name: studentName,
       email: emailEl.value.trim(),
@@ -120,12 +127,8 @@ function openEditStudent() {
       grade: gradeEl.value.trim()
     };
 
-    localStorage.setItem(
-      "student_profile_" + studentName,
-      JSON.stringify(updated)
-    );
+    localStorage.setItem("student_profile_" + studentName, JSON.stringify(updated));
 
-    // Close modals and refresh the profile
     closeModalById("edit_modal");
     renderStudentProfile();
   };
@@ -156,13 +159,9 @@ function removeStudentFromListKey(listKey, studentName) {
 
   for (var i = 0; i < arr.length; i++) {
     var item = arr[i];
-
-    // אם זה אובייקט {name: "..."} או מחרוזת "..."
     var nameVal = (item && typeof item === "object" && item.name != null) ? item.name : item;
 
-    if (normalizeName(nameVal) !== target) {
-      out.push(item);
-    }
+    if (normalizeName(nameVal) !== target) out.push(item);
   }
 
   localStorage.setItem(listKey, JSON.stringify(out));
@@ -174,185 +173,169 @@ function deleteStudent() {
 
     var target = normalizeName(studentName);
 
-    // ✅ 1) מוחק כל key שקשור לסטודנט (כולל lessons_, goals_, וכו')
-    // (בטוח גם אם אתה לא זוכר כל מפתח)
+    // delete keys
     var keysToDelete = [];
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
       if (!k) continue;
 
-      // מוחק את כל ה-prefixים המוכרים
-      var prefixes = ["student_profile_", "goals_", "summaries_", "files_", "lessons_"];
+      var prefixes = ["student_profile_", "goals_", "summaries_", "lessons_"];
       for (var p = 0; p < prefixes.length; p++) {
         var pref = prefixes[p];
         if (k.indexOf(pref) === 0) {
           var namePart = k.substring(pref.length);
-          if (normalizeName(namePart) === target) {
-            keysToDelete.push(k);
-          }
+          if (normalizeName(namePart) === target) keysToDelete.push(k);
         }
       }
     }
-    for (var d = 0; d < keysToDelete.length; d++) {
-      localStorage.removeItem(keysToDelete[d]);
-    }
+    for (var d = 0; d < keysToDelete.length; d++) localStorage.removeItem(keysToDelete[d]);
 
-    // ✅ 2) מסיר את השם מכל “רשימות סטודנטים” אפשריות בדף HOME
-    // (כי לפעמים אצלך זה לא רק students_db)
+    // remove from possible students lists
     removeStudentFromListKey("students_db", studentName);
     removeStudentFromListKey("students", studentName);
     removeStudentFromListKey("students_list", studentName);
     removeStudentFromListKey("all_students", studentName);
 
-    // ✅ 3) מסיר שיעורים מהיומן הכללי אם קיים all_lessons
+    // remove from global schedule
     var allLessonsRaw = localStorage.getItem("all_lessons");
     if (allLessonsRaw) {
       var allLessons;
-      try {
-        allLessons = JSON.parse(allLessonsRaw);
-      } catch (e2) {
-        allLessons = null;
-      }
+      try { allLessons = JSON.parse(allLessonsRaw); } catch (e2) { allLessons = null; }
 
       if (Array.isArray(allLessons)) {
         var kept = [];
         for (var j = 0; j < allLessons.length; j++) {
           var st = (allLessons[j] && allLessons[j].student != null) ? allLessons[j].student : "";
-          if (normalizeName(st) !== target) {
-            kept.push(allLessons[j]);
-          }
+          if (normalizeName(st) !== target) kept.push(allLessons[j]);
         }
         localStorage.setItem("all_lessons", JSON.stringify(kept));
       }
     }
 
-    // ניקוי סטודנט נבחר
     localStorage.removeItem("selectedStudent");
-
-    // חזרה ל-Home (הרענון יבנה רשימה מחדש בלי השם)
     window.location.href = "home.html";
   });
 }
-//lesson summaries and history
 
+// ===============================
+// SUMMARIES
+// ===============================
 let summaries = [];
 
 function loadSummaries() {
-    const saved = localStorage.getItem(summariesKey);
-    summaries = saved ? JSON.parse(saved) : [];
-    renderSummaries();
+  const saved = localStorage.getItem(summariesKey);
+  summaries = saved ? JSON.parse(saved) : [];
+  renderSummaries();
 }
 loadSummaries();
+
 function saveSummaries() {
-    localStorage.setItem(summariesKey, JSON.stringify(summaries));
+  localStorage.setItem(summariesKey, JSON.stringify(summaries));
 }
 
 function renderSummaries() {
-    const container = document.getElementById("historyList");
-    container.innerHTML = "";
+  const container = document.getElementById("historyList");
+  container.innerHTML = "";
 
-    if (summaries.length === 0) {
-        const empty = document.createElement("div");
-        empty.textContent = "No summaries saved yet.";
-        empty.style.fontSize = "13px";
-        empty.style.color = "#6b7280";
-        container.appendChild(empty);
-        return;
-    }
+  if (summaries.length === 0) {
+    const empty = document.createElement("div");
+    empty.textContent = "No summaries saved yet.";
+    empty.style.fontSize = "13px";
+    empty.style.color = "#6b7280";
+    container.appendChild(empty);
+    return;
+  }
 
-    summaries
-        .slice()
-        .reverse()
-        .forEach((s) => {
-            const card = document.createElement("div");
-            card.className = "history-card";
+  summaries.slice().reverse().forEach((s) => {
+    const card = document.createElement("div");
+    card.className = "history-card";
 
-            const header = document.createElement("div");
-            header.className = "history-header";
-            header.innerHTML = `<span>${s.subject || "Lesson"}</span><span>${s.date || ""}</span>`;
+    const header = document.createElement("div");
+    header.className = "history-header";
+    header.innerHTML = `<span>${s.subject || "Lesson"}</span><span>${s.date || ""}</span>`;
 
-            const meta = document.createElement("div");
-            meta.className = "history-meta";
-            meta.textContent = s.createdAt
-                ? "Saved at: " + new Date(s.createdAt).toLocaleString()
-                : "";
+    const meta = document.createElement("div");
+    meta.className = "history-meta";
+    meta.textContent = s.createdAt ? "Saved at: " + new Date(s.createdAt).toLocaleString() : "";
 
-            const body = document.createElement("div");
-            body.textContent = s.summary || "";
+    const body = document.createElement("div");
+    body.textContent = s.summary || "";
 
-            card.appendChild(header);
-            card.appendChild(meta);
-            card.appendChild(body);
-            container.appendChild(card);
-        });
+    card.appendChild(header);
+    card.appendChild(meta);
+    card.appendChild(body);
+    container.appendChild(card);
+  });
 }
 
+// ===============================
+// SAVE SUMMARY (with custom message)
+// ===============================
 function saveLessonSummary() {
-    const date = document.getElementById("lessonDate").value;
-    const subject = document.getElementById("lessonSubject").value.trim();
-    const summary = document.getElementById("lessonSummary").value.trim();
+  const msgEl = document.getElementById("summaryMsg");
+  hideMsg(msgEl);
 
-    if (!date || !subject || !summary) {
-        alert("Please fill date, subject and summary.");
-        return;
-    }
+  const date = document.getElementById("lessonDate").value;
+  const subject = document.getElementById("lessonSubject").value.trim();
+  const summary = document.getElementById("lessonSummary").value.trim();
 
-    summaries.push({ date, subject, summary, createdAt: Date.now() });
-    saveSummaries();
-    renderSummaries();
+  if (!date) return showMsg(msgEl, "Please choose a lesson date.", "error");
+  if (!subject) return showMsg(msgEl, "Please enter a subject.", "error");
+  if (!summary) return showMsg(msgEl, "Please write the lesson summary.", "error");
 
-    // נשמור גם ביומן הכללי של המורה
-    saveLessonToAllLessons(date, subject, null);
+  summaries.push({ date, subject, summary, createdAt: Date.now() });
+  saveSummaries();
+  renderSummaries();
 
-    document.getElementById("lessonSummary").value = "";
+  // save also to teacher global schedule
+  saveLessonToAllLessons(date, subject, null);
+
+  document.getElementById("lessonSummary").value = "";
+
+  showMsg(msgEl, "✔ Summary saved successfully", "success");
+  setTimeout(() => hideMsg(msgEl), 2000);
 }
 
-// ============== SAVE TO TEACHER's GLOBAL SCHEDULE ==============
-
+// ===============================
+// SAVE TO TEACHER's GLOBAL SCHEDULE
+// ===============================
 function saveLessonToAllLessons(date, subject, time) {
-    const allLessons = JSON.parse(localStorage.getItem("all_lessons")) || [];
+  const allLessons = JSON.parse(localStorage.getItem("all_lessons")) || [];
 
-    const lesson = {
-        student: studentName,
-        date,
-        time: time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        subject,
-        createdAt: Date.now()
-    };
+  const lesson = {
+    student: studentName,
+    date,
+    time: time || new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    subject,
+    createdAt: Date.now()
+  };
 
-    allLessons.push(lesson);
-    localStorage.setItem("all_lessons", JSON.stringify(allLessons));
+  allLessons.push(lesson);
+  localStorage.setItem("all_lessons", JSON.stringify(allLessons));
 }
 
-// ============== NEXT LESSON SCHEDULER (BUTTON) ==============
-
+// ===============================
+// ADD TO SCHEDULE (with custom message)
+// ===============================
 function saveNextLesson() {
-    const date = document.getElementById("nextLessonDate").value;
-    const time = document.getElementById("nextLessonTime").value;
-    const subject = document.getElementById("nextLessonSubject").value.trim();
+  const msgEl = document.getElementById("scheduleMsg");
+  hideMsg(msgEl);
 
-    if (!date || !time || !subject) {
-        alert("Please fill date, time and subject.");
-        return;
-    }
+  const date = document.getElementById("nextLessonDate").value;
+  const time = document.getElementById("nextLessonTime").value;
+  const subject = document.getElementById("nextLessonSubject").value.trim();
 
-    // שמירה גם ביומן הכללי
-    saveLessonToAllLessons(date, subject, time);
+  if (!date) return showMsg(msgEl, "Please choose a date for the next lesson.", "error");
+  if (!time) return showMsg(msgEl, "Please choose a time for the next lesson.", "error");
+  if (!subject) return showMsg(msgEl, "Please enter the lesson subject.", "error");
 
-    // ניקוי שדה
-    document.getElementById("nextLessonSubject").value = "";
+  saveLessonToAllLessons(date, subject, time);
 
-    // הודעת הצלחה
-    const msg = document.getElementById("lessonSavedMsg");
-    if (msg) {
-        msg.style.display = "visible";
-        msg.style.display = "block";
-        setTimeout(() => {
-            msg.style.display = "none";
-        }, 2000);
-    }
+  document.getElementById("nextLessonSubject").value = "";
+
+  showMsg(msgEl, "✔ Lesson added to schedule", "success");
+  setTimeout(() => hideMsg(msgEl), 2000);
 }
-
 
 // ===============================
 // GOALS

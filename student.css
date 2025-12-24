@@ -1,148 +1,73 @@
+/* student.css */
+
 /* GLOBAL */
-* {
-    box-sizing: border-box;
-}
-body {
-    margin: 0;
-    background: #f3f5fb;
-    font-family: "Poppins", sans-serif;
-    color: #111827;
-    scroll-behavior: smooth;
+* { box-sizing: border-box; }
+
+body{
+  margin: 0;
+  background: #f3f5fb;
+  font-family: "Poppins", sans-serif;
+  color: #111827;
+  scroll-behavior: smooth;
+
+  /* ✅ footer always at bottom */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* HEADER */
-header {
-    background: #1f3af5;
-    color: #ffffff;
-    padding: 16px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.35);
-}
-header .title-block {
-    display: flex;
-    flex-direction: column;
-}
-header .title-block span {
-    font-size: 13px;
-    opacity: 0.9;
-}
-#studentName {
-    font-size: 22px;
-    font-weight: 600;
-}
-header button {
-    background: #ffffff;
-    color: #1f3af5;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.25s;
-}
-header button:hover {
-    transform: translateY(-2px);
-    background: #facc15;
+header{
+  background: #1f3af5;
+  color: #ffffff;
+  padding: 16px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.35);
 }
 
-/* NAVBAR */
-nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
+header .title-block{
+  display: flex;
+  flex-direction: column;
 }
-nav button {
-    background: transparent;
-    border-radius: 999px;
-    border: 1px solid #1f3af5;
-    color: #1f3af5;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.25s;
+
+header .title-block span{
+  font-size: 13px;
+  opacity: 0.9;
 }
-nav button:hover {
-    background: #1f3af5;
-    color: #ffffff;
-    transform: translateY(-2px);
+
+#studentName{
+  font-size: 22px;
+  font-weight: 600;
+}
+
+header button{
+  background: #ffffff;
+  color: #1f3af5;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+header button:hover{
+  transform: translateY(-2px);
+  background: #facc15;
 }
 
 /* LAYOUT */
 .main-container{
   padding: 24px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  align-items: start;
-}
-@media (max-width: 750px){
-  .main-container{
-    grid-template-columns: 1fr; /* ✅ טור אחד במובייל */
-  }
-}
-
-
-/* CARDS / SECTIONS */
-.section {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 18px 20px;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
-    transition: 0.25s;
-}
-.section:hover {
-    transform: translateY(-3px);
-}
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-}
-.section-header h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1f2937;
-}
-.section-header span.label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6b7280;
-}
-
-/* PERSONAL INFO */
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-.info-row span.label {
-    font-weight: 600;
-    color: #4b5563;
-}
-.info-row span.value {
-    color: #111827;
-}
-
-/* GOALS BOX */
-.main-container{
-  padding: 24px;
-  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 20px;
   align-items: start;
+
+  /* ✅ pushes footer down */
+  flex: 1;
 }
 
 .left-column,
@@ -152,246 +77,683 @@ nav button:hover {
   gap: 20px;
 }
 
-#goalsBox {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* CARDS / SECTIONS */
+.section{
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  transition: 0.25s;
 }
-.goal-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 5px;
-}
-.goal-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #eef2ff;
-    border-radius: 10px;
-    padding: 8px 10px;
-    font-size: 14px;
-}
-.goal-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.goal-status {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    background: #d1fae5;
-    color: #047857;
-}
-.goal-status.done {
-    background: #d1d5db;
-    color: #374151;
-}
-.goal-actions button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 13px;
-    margin-left: 4px;
-    padding: 3px 6px;
-    border-radius: 6px;
-    transition: 0.2s;
-}
-.goal-actions button.complete {
-    color: #047857;
-}
-.goal-actions button.delete {
-    color: #b91c1c;
-}
-.goal-actions button:hover {
-    background: #e5e7eb;
+.section:hover{ transform: translateY(-3px); }
+
+.section-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
-/* GOAL INPUT */
-.goal-input-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
+.section-header h3{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
 }
-.goal-input-row input {
-    flex: 1;
+
+.section-header span.label{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
 }
-input, textarea, select {
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
-    padding: 8px 10px;
-    font-family: inherit;
-    font-size: 13px;
-    transition: 0.22s;
+
+/* PERSONAL INFO */
+.info-row{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
-input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: #1f3af5;
-    box-shadow: 0 0 0 1px rgba(31,58,245,0.12);
+.info-row span.label{ font-weight: 600; color: #4b5563; }
+.info-row span.value{ color: #111827; }
+
+.profile-actions{
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* INPUTS */
+input, textarea, select{
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  transition: 0.22s;
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
+  border-color: #1f3af5;
+  box-shadow: 0 0 0 1px rgba(31,58,245,0.12);
+}
+
+/* ✅ TEXTAREA – no dragging */
+textarea{
+  width: 100%;
+  min-height: 80px;
+  resize: none;
+  overflow-y: auto;
 }
 
 /* BUTTONS */
-.btn {
-    border-radius: 999px;
-    border: none;
-    background: #1f3af5;
-    color: #ffffff;
-    padding: 8px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.22s;
+.btn{
+  border-radius: 999px;
+  border: none;
+  background: #1f3af5;
+  color: #ffffff;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.22s;
 }
-.btn:hover {
-    background: #111bb7;
-    transform: translateY(-1px);
-}
-
-/* LAST LESSON + HISTORY */
-textarea {
-    width: 100%;
-    resize: vertical;
-    min-height: 80px;
-}
-.lesson-form-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-.lesson-form-row input, .lesson-form-row select {
-    flex: 1;
-}
-.history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
-    max-height: 260px;
-    overflow-y: auto;
-}
-.history-card {
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    padding: 8px 10px;
-    background: #f9fafb;
-    font-size: 13px;
-}
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 4px;
-    font-weight: 500;
-    color: #111827;
-}
-.history-meta {
-    font-size: 11px;
-    color: #6b7280;
+.btn:hover{
+  background: #111bb7;
+  transform: translateY(-1px);
 }
 
-/* FILE UPLOAD */
-.file-box {
-    border: 2px dashed #cbd5f5;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    background: #f9fafb;
-    font-size: 13px;
-    color: #4b5563;
+/* LESSON */
+.lesson-form-row{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
 }
-.file-box input[type="file"] {
-    margin-top: 8px;
-}
-.file-list {
-    margin-top: 10px;
-    font-size: 13px;
-}
-.file-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid #e5e7eb;
+.lesson-form-row input, .lesson-form-row select{ flex: 1; }
+
+/* HISTORY */
+.history-list{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  max-height: 260px;
+  overflow-y: auto;
 }
 
-/* SMALL SCROLLBAR FOR HISTORY */
-.history-list::-webkit-scrollbar {
-    width: 6px;
-}
-.history-list::-webkit-scrollbar-thumb {
-    background: #cbd5f5;
-    border-radius: 999px;
+.history-card{
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  background: #f9fafb;
+  font-size: 13px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .main-container {
-        padding: 16px;
-    }
+.history-header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #111827;
 }
-.profile-actions{
-  display:flex;
-  gap:10px;
-  margin: 12px 0 0;
+
+.history-meta{
+  font-size: 11px;
+  color: #6b7280;
 }
+
+/* small scrollbar */
+.history-list::-webkit-scrollbar{ width: 6px; }
+.history-list::-webkit-scrollbar-thumb{
+  background: #cbd5f5;
+  border-radius: 999px;
+}
+
+/* GOALS */
+#goalsBox{ display: flex; flex-direction: column; gap: 10px; }
+
+.goal-list{ display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+
+.goal-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #eef2ff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.goal-left{ display: flex; align-items: center; gap: 8px; }
+
+.goal-status{
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #d1fae5;
+  color: #047857;
+}
+
+.goal-status.done{
+  background: #d1d5db;
+  color: #374151;
+}
+
+.goal-actions button{
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 4px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+.goal-actions button.complete{ color: #047857; }
+.goal-actions button.delete{ color: #b91c1c; }
+.goal-actions button:hover{ background: #e5e7eb; }
+
+.goal-input-row{ display: flex; gap: 8px; margin-top: 10px; }
+.goal-input-row input{ flex: 1; }
 
 /* MODAL */
 .modal{
   position: fixed;
-  top:0; left:0;
-  width:100vw; height:100vh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   background: rgba(0,0,0,0.5);
-  display:none;
-  justify-content:center;
-  align-items:center;
+  display: none;
+  justify-content: center;
+  align-items: center;
   z-index: 999;
   backdrop-filter: blur(3px);
 }
 
 .modal_content{
-  background:#ffffff;
+  background: #ffffff;
   padding: 22px;
   border-radius: 14px;
   width: 320px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-.modal_input{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #d1d5db;
-  font-family: inherit;
-}
-
 .modal_buttons{
   margin-top: 14px;
-  display:flex;
-  gap:10px;
+  display: flex;
+  gap: 10px;
 }
 
 .modal_buttons button{
-  flex:1;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:600;
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
 }
-#confirm-yes, #edit-save{
-  background:#1f3af5;
-  color:white;
-}
-#confirm-no, #edit-cancel{
-  background:#e5e7eb;
-  color:#111827;
-}
-.app-footer{
-  bottom: 14px;
-  width: 100%;
+
+#confirm-yes, #edit-save{ background: #1f3af5; color: white; }
+#confirm-no, #edit-cancel{ background: #e5e7eb; color: #111827; }
+
+/* ✅ inline messages */
+.form-msg{
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 12px;
+  border-radius: 12px;
+  display: none;
   text-align: center;
-  padding-top:10px;
-  font-size: 12px;
-  color: rgba(31, 41, 55, 0.65);
-  letter-spacing: 0.04em;
+}
+
+.form-msg.error{
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.form-msg.success{
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* FOOTER */
+.app-footer{
+  text-align: center;
+  padding: 12px 10px;
+  font-size: 13px;
+  color: #6b7280;
+  background: transparent;
+}
+/* ===========================
+   TutorHub PRO THEME (Light)
+   Paste at END of CSS
+   =========================== */
+/* ===== Student Page – Color Theme ===== */
+/* ===== Student Page – Color Theme ===== */
+
+/* ===== Student Page – Color Theme ===== */
+
+:root{
+  --bg1: #f5f7ff;
+  --bg2: #eef2ff;
+
+  --primary: #2563eb;
+  --primary2: #1e40af;
+
+  --accent1: #a78bfa; /* purple */
+  --accent2: #22c55e; /* green */
+  --accent3: #f59e0b; /* amber */
+
+  --card: #ffffff;
+  --card2: #f8fafc;
+
+  --text: #0f172a;
+  --muted: #64748b;
+
+  --border: #e2e8f0;
+  --shadow: 0 12px 30px rgba(15,23,42,0.08);
+}
+
+/* ===== Page background ===== */
+body{
+  background:
+    radial-gradient(1000px 600px at 10% 10%, rgba(167,139,250,0.22), transparent 55%),
+    radial-gradient(900px 600px at 90% 20%, rgba(34,197,94,0.18), transparent 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  color: var(--text);
+}
+
+/* ===== Header ===== */
+header,
+.student-header{
+  background: linear-gradient(135deg, var(--primary), var(--accent1));
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+/* ===== Main cards / sections ===== */
+.student-info,
+.lessons-section,
+.goals-section,
+.notes-section,
+.profile-section,
+.section-card{
+  background: linear-gradient(180deg, var(--card), var(--card2));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* ===== Section titles ===== */
+.student-info h2,
+.lessons-section h2,
+.goals-section h2,
+.notes-section h2,
+.profile-section h2{
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.student-info h2::after,
+.lessons-section h2::after,
+.goals-section h2::after,
+.notes-section h2::after,
+.profile-section h2::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 52px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--accent3));
+}
+
+/* ===== Inputs ===== */
+input,
+textarea,
+select{
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: white;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  outline: none;
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 3px rgba(167,139,250,0.18);
+}
+
+/* ===== Buttons ===== */
+button{
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(37,99,235,0.22);
+  transition: 0.2s;
+}
+
+button:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+/* Danger buttons (delete) */
+button.delete,
+button.remove,
+.delete-btn{
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+}
+
+/* ===== Lessons list ===== */
+.lesson-card,
+.lesson-item{
+  border-left: 6px solid rgba(167,139,250,0.55);
+  padding-left: 12px;
+}
+
+.lesson-card:nth-child(2n),
+.lesson-item:nth-child(2n){
+  border-left-color: rgba(34,197,94,0.55);
+}
+
+.lesson-card:nth-child(3n),
+.lesson-item:nth-child(3n){
+  border-left-color: rgba(245,158,11,0.55);
+}
+
+/* ===== Notes / goals ===== */
+.note,
+.goal,
+.goal-item{
+  background: #fff8a8;
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(15,23,42,0.18);
+}
+
+/* ===== Footer ===== */
+footer,
+.app-footer{
+  color: rgba(15,23,42,0.55);
+  text-align: center;
+}
+/* =========================
+   STUDENT PAGE – Creative Theme v2 (CSS only)
+   Paste at the END of student.css
+========================= */
+
+:root{
+  --ink:#0b1220;
+  --muted:#64748b;
+
+  --p1:#2563eb;   /* blue */
+  --p2:#a78bfa;   /* purple */
+  --p3:#22c55e;   /* green */
+  --p4:#f59e0b;   /* amber */
+
+  --glass: rgba(255,255,255,0.62);
+  --glass2: rgba(255,255,255,0.42);
+  --border: rgba(148,163,184,0.35);
+
+  --shadow1: 0 18px 45px rgba(15,23,42,0.14);
+  --shadow2: 0 10px 28px rgba(15,23,42,0.10);
+}
+
+/* ---------- Background: aurora + subtle dots texture ---------- */
+body{
+  color: var(--ink);
+  background:
+    radial-gradient(1100px 700px at 10% 15%, rgba(167,139,250,0.30), transparent 58%),
+    radial-gradient(1000px 650px at 90% 18%, rgba(37,99,235,0.22), transparent 60%),
+    radial-gradient(1000px 650px at 60% 95%, rgba(34,197,94,0.18), transparent 62%),
+    linear-gradient(180deg, #f7f8ff, #edf2ff);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* dotted texture overlay */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.28;
+  background-image:
+    radial-gradient(rgba(15,23,42,0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* ---------- Header: glass + gradient + chip look ---------- */
+header,
+.student-header{
+  background: linear-gradient(135deg, rgba(37,99,235,0.92), rgba(167,139,250,0.88));
+  color: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow1);
+  border: 1px solid rgba(255,255,255,0.22);
+  position: relative;
+  overflow: hidden;
+}
+
+/* animated glow line */
+header::after,
+.student-header::after{
+  content:"";
+  position:absolute;
+  top:-30%;
+  left:-40%;
+  width: 70%;
+  height: 160%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: rotate(18deg);
+  animation: headerSweep 6.5s ease-in-out infinite;
+}
+@keyframes headerSweep{
+  0%{ left:-60%; opacity:0; }
+  12%{ opacity:1; }
+  45%{ left:120%; opacity:0.9; }
+  100%{ left:120%; opacity:0; }
+}
+
+/* ---------- Sections/cards: “premium glass cards” + top gradient border ---------- */
+main section,
+.students-section,
+.calendar-section,
+.notes-section,
+.student-info,
+.profile-section,
+.lessons-section,
+.goals-section,
+.section-card{
+  background: linear-gradient(180deg, var(--glass), var(--glass2));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* top neon border (gives color without being loud) */
+main section::before,
+.students-section::before,
+.calendar-section::before,
+.notes-section::before,
+.student-info::before,
+.profile-section::before,
+.lessons-section::before,
+.goals-section::before,
+.section-card::before{
+  content:"";
+  position:absolute;
+  left: 0;
+  top: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--p1), var(--p2), var(--p4), var(--p3));
+  opacity: 0.95;
+}
+
+/* ---------- Titles: gradient text + underline ---------- */
+h2{
+  position: relative;
+  margin-bottom: 12px;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, var(--ink), rgba(11,18,32,0.65));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+h2::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width: 78px;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--p1), var(--p2));
+  box-shadow: 0 10px 22px rgba(37,99,235,0.18);
+}
+
+/* ---------- Inputs: soft glass + clear focus ring ---------- */
+input, textarea, select{
+  border: 1px solid rgba(148,163,184,0.50);
+  background: rgba(255,255,255,0.88);
+  border-radius: 12px;
+  padding: 10px 12px;
+  transition: 0.18s ease;
+  color: var(--ink);
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
+  border-color: rgba(167,139,250,0.90);
+  box-shadow:
+    0 0 0 4px rgba(167,139,250,0.18),
+    0 14px 30px rgba(15,23,42,0.12);
+}
+
+/* ---------- Buttons: “pill + gradient + glow” ---------- */
+button{
+  background: linear-gradient(135deg, var(--p1), var(--p2));
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(37,99,235,0.20);
+  transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
+}
+
+button:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 18px 40px rgba(37,99,235,0.24);
+}
+
+button:active{
+  transform: translateY(0px) scale(0.99);
+}
+
+/* Danger buttons */
+.delete-btn,
+button.delete,
+button.remove{
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 14px 28px rgba(239,68,68,0.22);
+}
+
+/* ---------- Lesson cards: neon side rail + hover lift ---------- */
+.card, .lesson-card, .lesson-item{
+  border-radius: 18px !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(15,23,42,0.12);
+  transition: 0.18s ease;
+}
+
+/* neon rail */
+.card::before, .lesson-card::before, .lesson-item::before{
+  content:"";
+  position:absolute;
+  left:0; top:0;
+  width: 6px; height: 100%;
+  background: linear-gradient(180deg, var(--p1), var(--p2));
+  opacity: 0.85;
+}
+.card:nth-child(2n)::before,
+.lesson-card:nth-child(2n)::before,
+.lesson-item:nth-child(2n)::before{
+  background: linear-gradient(180deg, var(--p3), var(--p4));
+}
+
+.card:hover, .lesson-card:hover, .lesson-item:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 20px 46px rgba(15,23,42,0.16);
+}
+
+/* ---------- Notes: “premium sticky” + tiny tape effect ---------- */
+.note-item, .note{
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 18px 35px rgba(15,23,42,0.16);
+  position: relative;
+  overflow: hidden;
+}
+
+/* tape */
+.note-item::after, .note::after{
+  content:"";
+  position:absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 88px;
+  height: 18px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.42);
+  border: 1px solid rgba(133, 83, 83, 0.22);
+  box-shadow: 0 10px 18px rgba(15,23,42,0.12);
+  opacity: 0.9;
+}
+
+/* ---------- Modals: cinematic + cleaner box ---------- */
+.modal{
+  background: rgba(2,6,23,0.56);
+  backdrop-filter: blur(7px);
+}
+.modal_content{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: linear-gradient(180deg, rgba(125, 112, 30, 0.88), rgba(255,255,255,0.66));
+  box-shadow: 0 30px 70px rgba(0,0,0,0.32);
+}
+
+/* ---------- Footer ---------- */
+footer, .app-footer{
+  color: rgba(15,23,42,0.58);
+  text-align: center;
+}
+
+/* ---------- Mobile tweaks ---------- */
+@media (max-width: 750px){
+  header, .student-header{
+    border-radius: 16px;
+  }
+  button{
+    border-radius: 999px;
+  }
 }

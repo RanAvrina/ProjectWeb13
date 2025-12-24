@@ -1,3 +1,4 @@
+<!-- student.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,14 +18,6 @@
   </div>
   <button onclick="window.location.href='home.html'">← Back</button>
 </header>
-
-<nav>
-  <button onclick="scrollToSection('info')">Overview</button>
-  <button onclick="scrollToSection('goals')">Goals</button>
-  <button onclick="scrollToSection('lastLesson')">Last Lesson</button>
-  <button onclick="scrollToSection('history')">Summaries History</button>
-  <button onclick="scrollToSection('files')">Files</button>
-</nav>
 
 <div class="main-container">
 
@@ -102,6 +95,7 @@
 
       <textarea id="lessonSummary" placeholder="Write what you covered in the last lesson..."></textarea>
       <button class="btn" style="margin-top:10px;" onclick="saveLessonSummary()">Save Summary</button>
+      <p id="summaryMsg" class="form-msg" style="display:none;"></p>
 
       <hr style="margin:20px 0;">
 
@@ -114,25 +108,7 @@
 
       <input type="text" id="nextLessonSubject" placeholder="Lesson subject (Math, English…)" />
       <button class="btn" style="margin-top:10px;" onclick="saveNextLesson()">Add to schedule</button>
-
-      <p id="lessonSavedMsg" style="color:green;display:none;margin-top:6px;font-size:13px;">
-        ✔ Lesson added successfully
-      </p>
-    </section>
-
-    <!-- FILES -->
-    <section id="files" class="section">
-      <div class="section-header">
-        <h3>Files</h3>
-        <span class="label">Upload & Track</span>
-      </div>
-
-      <div class="file-box">
-        <div>Upload worksheets, homework, or tests.</div>
-        <input type="file" id="fileInput" />
-      </div>
-
-      <div id="fileList" class="file-list"></div>
+      <p id="scheduleMsg" class="form-msg" style="display:none;"></p>
     </section>
 
   </div>
@@ -155,19 +131,55 @@
   <div class="modal_content">
     <p style="margin-top:0; font-weight:600;">Edit student details</p>
 
-    <input id="edit_email" type="text" placeholder="Email" class="modal_input">
-    <input id="edit_phone" type="text" placeholder="Phone" class="modal_input">
-    <input id="edit_grade" type="text" placeholder="Grade" class="modal_input">
+    <form id="edit-student-form">
+      <input
+        id="edit_phone"
+        name="phone"
+        type="tel"
+        placeholder="Phone"
+        required
+        pattern="^[0-9+\-\s]{7,15}$"
+        maxlength="15"
+        title="Enter a valid phone number"
+      />
+
+      <input
+        id="edit_email"
+        name="email"
+        type="email"
+        placeholder="Email"
+        required
+        pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+        title="Email must include a valid domain (e.g. name@gmail.com)"
+      />
+
+      <input
+        id="edit_grade"
+        name="grade"
+        type="text"
+        placeholder="Grade (1-12)"
+        required
+        pattern="^(1[0-2]|[1-9])$"
+        title="Grade must be between 1 and 12"
+        maxlength="2"
+      />
+    </form>
 
     <div class="modal_buttons">
-      <button id="edit-save">Save</button>
-      <button id="edit-cancel">Cancel</button>
+      <button id="edit-save" type="button">Save</button>
+      <button id="edit-cancel" type="button">Cancel</button>
     </div>
   </div>
 </div>
+
 <footer class="app-footer">
-        <span>© 2025 TutorHub</span>
-  </footer>
+  <span>
+    TutorHub - a place to learn, grow, and feel at home
+    <br>
+    © 2025 TutorHub
+  </span>
+</footer>
+
 <script src="student.js"></script>
 </body>
 </html>

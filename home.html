@@ -50,14 +50,20 @@
             </div>
             <div class="add-student-box">
   <h3>Add Student</h3>
+<form id="add-student-form">
+  <input id="new-student-name" name="fullName" type="text" placeholder="Full name" required minlength="2" />
 
-  <input id="new-student-name" type="text" placeholder="Full name" />
-  <input id="new-student-phone" type="text" placeholder="Phone" />
-  <input id="new-student-email" type="text" placeholder="Email" />
-  <input id="new-student-grade" type="text" placeholder="Grade / Level" />
-  <button id="add-student-btn" type="button">Add Student</button>
+  <input id="new-student-phone" name="phone" type="tel" placeholder="Phone" required pattern="^[0-9+\-\s]{7,15}$" maxlength="15" title="Enter a valid phone number" />
 
-</div>
+  <input id="new-student-email" name="email" type="email" placeholder="Email" required/>
+
+  <input id="new-student-grade" name="grade"  type="text" placeholder="Grade / Level" required  maxlength="20"
+  />
+
+  <button id="add-student-btn" type="submit">Add Student</button>
+</form>
+
+
 
         </section>
         <!-- 2. Upcoming Classes – cards -->
@@ -105,7 +111,10 @@
         </div>
     </div>
      <footer class="app-footer">
-        <span>© 2025 TutorHub</span>
+        <span> 
+           TutorHub - a place to learn, grow, and feel at home
+            <br>
+            © 2025 TutorHub</span>
     </footer>
 
 <script src="home.js"></script>
