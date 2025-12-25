@@ -1,17 +1,91 @@
+//CALSSES
+
+class StudentProfile {
+  constructor(name, email, phone, grade) {
+    this.name = name;
+    this.email = email;
+    this.phone = phone;
+    this.grade = grade;
+  }
+  toObject() {
+    return { name: this.name, email: this.email, phone: this.phone, grade: this.grade };
+  }
+  static fromStorage(studentName) {
+    let profile = {};
+    try {
+      profile = JSON.parse(localStorage.getItem("student_profile_" + studentName) || "{}");
+    } catch (e) {
+      profile = {};
+    }
+    return new StudentProfile(
+      studentName,
+      profile.email || "",
+      profile.phone || "",
+      profile.grade || ""
+    );
+  }
+}
+
+class Summary {
+  constructor(date, subject, summary, createdAt) {
+    this.date = date;
+    this.subject = subject;
+    this.summary = summary;
+    this.createdAt = createdAt; // number (Date.now()) - keep same as before
+  }
+  toObjectN() {
+    return { date: this.date, subject: this.subject, summary: this.summary, createdAt: this.createdAt };
+  }
+}
+
+class Lesson {
+  constructor(student, date, subject, time, createdAt) {
+    this.student = student;
+    this.date = date;
+    this.time = time;
+    this.subject = subject;
+    this.createdAt = createdAt; // number (Date.now()) - keep same as before
+  }
+  toObject() {
+    return { student: this.student, date: this.date, time: this.time, subject: this.subject, createdAt: this.createdAt };
+  }
+  static build(studentName, date, subject, timeOrNull) {
+    const timeFinal =
+      timeOrNull ||
+      new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return new Lesson(studentName, date, subject, timeFinal, Date.now());
+  }
+}
+
+class Goal {
+  constructor(text, done) {
+    this.text = text;
+    this.done = !!done;
+  }
+  toggle() {
+    this.done = !this.done;
+  }
+  toObject() {
+    return { text: this.text, done: this.done };
+  }
+}
+
+//CODE
+
 var studentName = localStorage.getItem("selectedStudent") || "Student Name";
 document.getElementById("studentName").textContent = studentName;
 
 var goalsKey = "goals_" + studentName;
 var summariesKey = "summaries_" + studentName;
 
-function showMsg(el, text, type) {
+function showMsg(el, text, type) { // error or success msg for the user
   if (!el) return;
   el.textContent = text;
-  el.className = "form-msg " + type; // "error" / "success"
+  el.className = "form-msg " + type;
   el.style.display = "block";
 }
 
-function hideMsg(el) {
+function hideMsg(el) { // hide msg
   if (!el) return;
   el.style.display = "none";
   el.textContent = "";
@@ -21,16 +95,12 @@ function hideMsg(el) {
 renderStudentProfile();
 
 function renderStudentProfile() {
-  var profile = {};
-  try {
-    profile = JSON.parse(localStorage.getItem("student_profile_" + studentName) || "{}");
-  } catch (e) {
-    profile = {};
-  }
+  // same output, just via class wrapper (safe)
+  var profileObj = StudentProfile.fromStorage(studentName);
 
-  document.getElementById("profileEmail").textContent = profile.email || "—";
-  document.getElementById("profilePhone").textContent = profile.phone || "—";
-  document.getElementById("profileGrade").textContent = profile.grade || "—";
+  document.getElementById("profileEmail").textContent = profileObj.email || "—";
+  document.getElementById("profilePhone").textContent = profileObj.phone || "—";
+  document.getElementById("profileGrade").textContent = profileObj.grade || "—";
 }
 
 function closeModalById(id) {
@@ -97,14 +167,15 @@ function openEditStudent() {
     var form = document.getElementById("edit-student-form");
     if (form && !form.reportValidity()) return;
 
-    var updated = {
-      name: studentName,
-      email: emailEl.value.trim(),
-      phone: phoneEl.value.trim(),
-      grade: gradeEl.value.trim()
-    };
+    // use class, but store same JSON shape
+    var updatedProfile = new StudentProfile(
+      studentName,
+      emailEl.value.trim(),
+      phoneEl.value.trim(),
+      gradeEl.value.trim()
+    );
 
-    localStorage.setItem("student_profile_" + studentName, JSON.stringify(updated));
+    localStorage.setItem("student_profile_" + studentName, JSON.stringify(updatedProfile.toObject()));
 
     closeModalById("edit_modal");
     renderStudentProfile();
@@ -115,7 +186,7 @@ function normalizeName(x) {
   return String(x || "").trim().toLowerCase();
 }
 
-function removeStudentFromListKey(listKey, studentName) {
+function removeStudentFromListKey(listKey, studentNameParam) {
   var raw = localStorage.getItem(listKey);
   if (!raw) return;
 
@@ -128,7 +199,7 @@ function removeStudentFromListKey(listKey, studentName) {
 
   if (!Array.isArray(arr)) return;
 
-  var target = normalizeName(studentName);
+  var target = normalizeName(studentNameParam);
   var out = [];
 
   for (var i = 0; i < arr.length; i++) {
@@ -242,13 +313,16 @@ function saveLessonSummary() {
 
   const date = document.getElementById("lessonDate").value;
   const subject = document.getElementById("lessonSubject").value.trim();
-  const summary = document.getElementById("lessonSummary").value.trim();
+  const summaryText = document.getElementById("lessonSummary").value.trim();
 
   if (!date) return showMsg(msgEl, "Please choose a lesson date.", "error");
   if (!subject) return showMsg(msgEl, "Please enter a subject.", "error");
-  if (!summary) return showMsg(msgEl, "Please write the lesson summary.", "error");
+  if (!summaryText) return showMsg(msgEl, "Please write the lesson summary.", "error");
 
-  summaries.push({ date, subject, summary, createdAt: Date.now() });
+  // use class, store same object shape
+  const newSummary = new Summary(date, subject, summaryText, Date.now());
+  summaries.push(newSummary.toObject());
+
   saveSummaries();
   renderSummaries();
 
@@ -263,17 +337,13 @@ function saveLessonSummary() {
 function saveLessonToAllLessons(date, subject, time) {
   const allLessons = JSON.parse(localStorage.getItem("all_lessons")) || [];
 
-  const lesson = {
-    student: studentName,
-    date,
-    time: time || new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    subject,
-    createdAt: Date.now()
-  };
+  // use class, but keep same output
+  const lesson = Lesson.build(studentName, date, subject, time);
+  allLessons.push(lesson.toObject());
 
-  allLessons.push(lesson);
   localStorage.setItem("all_lessons", JSON.stringify(allLessons));
 }
+
 const d = document.getElementById("nextLessonDate");
 if (d) d.min = new Date().toISOString().split("T")[0];
 
@@ -343,6 +413,7 @@ function renderGoals() {
       toggle.className = "complete";
       toggle.textContent = g.done ? "↺" : "✓";
       toggle.onclick = function () {
+        // keep same behavior; optional class wrapper not needed here
         goals[index].done = !goals[index].done;
         saveGoals();
         renderGoals();
@@ -374,7 +445,10 @@ function addGoal() {
   var text = input.value.trim();
   if (!text) return;
 
-  goals.unshift({ text: text, done: false });
+  // use class, store same shape
+  var g = new Goal(text, false);
+  goals.unshift(g.toObject());
+
   input.value = "";
   saveGoals();
   renderGoals();

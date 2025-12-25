@@ -1,30 +1,90 @@
-/* student.css */
+/* student.css (clean - same look) */
 
 /* GLOBAL */
-*{ box-sizing: border-box; }
+* { box-sizing: border-box; }
 
+/* THEME VARS (only what's used in the active theme) */
+:root{
+  --ink:#0b1220;
+  --muted:#64748b;
+
+  --p1:#2563eb;   /* blue */
+  --p2:#a78bfa;   /* purple */
+  --p3:#22c55e;   /* green */
+  --p4:#f59e0b;   /* amber */
+
+  --shadow1: 0 18px 45px rgba(15,23,42,0.14);
+  --shadow2: 0 10px 28px rgba(15,23,42,0.10);
+}
+
+/* BODY (merged: base layout + final background) */
 body{
   margin: 0;
-  background: #f3f5fb;
   font-family: "Poppins", sans-serif;
-  color: #111827;
   scroll-behavior: smooth;
 
-  /* ✅ footer always at bottom */
+  /* footer always at bottom */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  /* active theme look */
+  color: var(--ink);
+  background:
+    radial-gradient(1100px 700px at 10% 15%, rgba(167,139,250,0.30), transparent 58%),
+    radial-gradient(1000px 650px at 90% 18%, rgba(37,99,235,0.22), transparent 60%),
+    radial-gradient(1000px 650px at 60% 95%, rgba(34,197,94,0.18), transparent 62%),
+    linear-gradient(180deg, #f7f8ff, #edf2ff);
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* HEADER */
+/* dotted texture overlay */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.28;
+  background-image: radial-gradient(rgba(15,23,42,0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* HEADER (merged: base layout + final look) */
 header{
-  background: #1f3af5;
   color: #ffffff;
   padding: 16px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.35);
+
+  /* active theme look */
+  background: linear-gradient(135deg, rgba(37,99,235,0.92), rgba(167,139,250,0.88));
+  border-radius: 18px;
+  box-shadow: var(--shadow1);
+  border: 1px solid rgba(255,255,255,0.22);
+  position: relative;
+  overflow: hidden;
+}
+
+/* animated glow line */
+header::after{
+  content:"";
+  position:absolute;
+  top:-30%;
+  left:-40%;
+  width: 70%;
+  height: 160%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: rotate(18deg);
+  animation: headerSweep 6.5s ease-in-out infinite;
+}
+@keyframes headerSweep{
+  0%{ left:-60%; opacity:0; }
+  12%{ opacity:1; }
+  45%{ left:120%; opacity:0.9; }
+  100%{ left:120%; opacity:0; }
 }
 
 header .title-block{
@@ -42,6 +102,7 @@ header .title-block span{
   font-weight: 600;
 }
 
+/* header back button stays white (more specific than button{}) */
 header button{
   background: #ffffff;
   color: #1f3af5;
@@ -65,9 +126,7 @@ header button:hover{
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 20px;
   align-items: start;
-
-  /* ✅ pushes footer down */
-  flex: 1;
+  flex: 1; /* pushes footer down */
 }
 
 .left-column, .right-column{
@@ -123,23 +182,27 @@ header button:hover{
   margin-top: 12px;
 }
 
-/* INPUTS */
+/* INPUTS (single definitive style – same as the active theme) */
 input, textarea, select{
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  padding: 8px 10px;
+  border: 1px solid rgba(148,163,184,0.50);
+  background: rgba(255,255,255,0.88);
+  border-radius: 12px;
+  padding: 10px 12px;
   font-family: inherit;
   font-size: 13px;
-  transition: 0.22s;
+  transition: 0.18s ease;
+  color: var(--ink);
 }
 
 input:focus, textarea:focus, select:focus{
   outline: none;
-  border-color: #1f3af5;
-  box-shadow: 0 0 0 1px rgba(31,58,245,0.12);
+  border-color: rgba(167,139,250,0.90);
+  box-shadow:
+    0 0 0 4px rgba(167,139,250,0.18),
+    0 14px 30px rgba(15,23,42,0.12);
 }
 
-/* ✅ TEXTAREA – no dragging */
+/* TEXTAREA – no dragging */
 textarea{
   width: 100%;
   min-height: 80px;
@@ -162,6 +225,34 @@ textarea{
 .btn:hover{
   background: #111bb7;
   transform: translateY(-1px);
+}
+
+/* default buttons (used by Add / Save etc.) */
+button{
+  background: linear-gradient(135deg, var(--p1), var(--p2));
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(37,99,235,0.20);
+  transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
+}
+
+button:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 18px 40px rgba(37,99,235,0.24);
+}
+
+button:active{
+  transform: translateY(0px) scale(0.99);
+}
+
+/* Danger buttons */
+.delete-btn, button.delete, button.remove{
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 14px 28px rgba(239,68,68,0.22);
 }
 
 /* LESSON */
@@ -212,17 +303,17 @@ textarea{
 
 /* GOALS */
 #goalsBox{ display: flex; flex-direction: column; gap: 10px; }
-
 .goal-list{ display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
 
 .goal-item{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #eef2ff;
+  background: #fff8a8; /* this is what the active theme enforces */
   border-radius: 10px;
   padding: 8px 10px;
   font-size: 14px;
+  box-shadow: 0 10px 24px rgba(15,23,42,0.18);
 }
 
 .goal-left{ display: flex; align-items: center; gap: 8px; }
@@ -262,20 +353,24 @@ textarea{
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 999;
-  backdrop-filter: blur(3px);
+
+  background: rgba(2,6,23,0.56);
+  backdrop-filter: blur(7px);
 }
 
 .modal_content{
   background: #ffffff;
   padding: 22px;
-  border-radius: 14px;
+  border-radius: 18px;
   width: 320px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+  border: 1px solid rgba(255,255,255,0.22);
+  background: linear-gradient(180deg, rgba(230, 229, 219, 0.88), rgba(255,255,255,0.66));
+  box-shadow: 0 30px 70px rgba(0,0,0,0.32);
 }
 
 .modal_buttons{
@@ -296,7 +391,7 @@ textarea{
 #confirm-yes, #edit-save{ background: #1f3af5; color: white; }
 #confirm-no, #edit-cancel{ background: #e5e7eb; color: #111827; }
 
-/* ✅ inline messages */
+/* inline messages */
 .form-msg{
   margin-top: 8px;
   font-size: 13px;
@@ -319,301 +414,6 @@ textarea{
   border: 1px solid #bbf7d0;
 }
 
-/* FOOTER */
-.app-footer{
-  text-align: center;
-  padding: 12px 10px;
-  font-size: 13px;
-  color: #6b7280;
-  background: transparent;
-}
-/* ===========================
-   TutorHub PRO THEME (Light)
-   Paste at END of CSS
-   =========================== */
-/* ===== Student Page – Color Theme ===== */
-/* ===== Student Page – Color Theme ===== */
-
-/* ===== Student Page – Color Theme ===== */
-
-:root{
-  --bg1: #f5f7ff;
-  --bg2: #eef2ff;
-
-  --primary: #2563eb;
-  --primary2: #1e40af;
-
-  --accent1: #a78bfa; /* purple */
-  --accent2: #22c55e; /* green */
-  --accent3: #f59e0b; /* amber */
-
-  --card: #ffffff;
-  --card2: #f8fafc;
-
-  --text: #0f172a;
-  --muted: #64748b;
-
-  --border: #e2e8f0;
-  --shadow: 0 12px 30px rgba(15,23,42,0.08);
-}
-
-/* ===== Page background ===== */
-body{
-  background:
-    radial-gradient(1000px 600px at 10% 10%, rgba(167,139,250,0.22), transparent 55%),
-    radial-gradient(900px 600px at 90% 20%, rgba(34,197,94,0.18), transparent 55%),
-    linear-gradient(180deg, var(--bg1), var(--bg2));
-  color: var(--text);
-}
-
-/* ===== Header ===== */
-header{
-  background: linear-gradient(135deg, var(--primary), var(--accent1));
-  color: white;
-  box-shadow: var(--shadow);
-}
-
-/* ===== Main cards / sections ===== */
-
-
-/* ===== Section titles ===== */
-.student-info h2, .lessons-section h2, .goals-section h2, .profile-section h2{
-  position: relative;
-  padding-bottom: 8px;
-}
-
-.student-info h2::after, .lessons-section h2::after, .goals-section h2::after, .profile-section h2::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 52px;
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary), var(--accent3));
-}
-
-/* ===== Inputs ===== */
-input, textarea, select{
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 10px;
-  background: white;
-}
-
-input:focus, textarea:focus, select:focus{
-  outline: none;
-  border-color: var(--accent1);
-  box-shadow: 0 0 0 3px rgba(167,139,250,0.18);
-}
-
-/* ===== Buttons ===== */
-button{
-  background: linear-gradient(135deg, var(--primary), var(--primary2));
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(37,99,235,0.22);
-  transition: 0.2s;
-}
-
-button:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-}
-
-/* Danger buttons (delete) */
-button.delete, button.remove, .delete-btn{
-  background: linear-gradient(135deg, #ef4444, #b91c1c);
-}
-
-/* ===== Lessons list ===== */
-
-
-/* ===== Notes / goals ===== */
-.goal, .goal-item{
-  background: #fff8a8;
-  border-radius: 10px;
-  box-shadow: 0 10px 24px rgba(15,23,42,0.18);
-}
-
-/* ===== Footer ===== */
-footer, .app-footer{
-  color: rgba(15,23,42,0.55);
-  text-align: center;
-}
-/* =========================
-   STUDENT PAGE – Creative Theme v2 (CSS only)
-   Paste at the END of student.css
-========================= */
-
-:root{
-  --ink:#0b1220;
-  --muted:#64748b;
-
-  --p1:#2563eb;   /* blue */
-  --p2:#a78bfa;   /* purple */
-  --p3:#22c55e;   /* green */
-  --p4:#f59e0b;   /* amber */
-
-  --glass: rgba(255,255,255,0.62);
-  --glass2: rgba(255,255,255,0.42);
-  --border: rgba(148,163,184,0.35);
-
-  --shadow1: 0 18px 45px rgba(15,23,42,0.14);
-  --shadow2: 0 10px 28px rgba(15,23,42,0.10);
-}
-
-/* ---------- Background: aurora + subtle dots texture ---------- */
-body{
-  color: var(--ink);
-  background:
-    radial-gradient(1100px 700px at 10% 15%, rgba(167,139,250,0.30), transparent 58%),
-    radial-gradient(1000px 650px at 90% 18%, rgba(37,99,235,0.22), transparent 60%),
-    radial-gradient(1000px 650px at 60% 95%, rgba(34,197,94,0.18), transparent 62%),
-    linear-gradient(180deg, #f7f8ff, #edf2ff);
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* dotted texture overlay */
-body::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.28;
-  background-image:
-    radial-gradient(rgba(15,23,42,0.08) 1px, transparent 1px);
-  background-size: 18px 18px;
-}
-
-/* ---------- Header: glass + gradient + chip look ---------- */
-header{
-  background: linear-gradient(135deg, rgba(37,99,235,0.92), rgba(167,139,250,0.88));
-  color: #fff;
-  border-radius: 18px;
-  box-shadow: var(--shadow1);
-  border: 1px solid rgba(255,255,255,0.22);
-  position: relative;
-  overflow: hidden;
-}
-
-/* animated glow line */
-header::after, .student-header::after{
-  content:"";
-  position:absolute;
-  top:-30%;
-  left:-40%;
-  width: 70%;
-  height: 160%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-  transform: rotate(18deg);
-  animation: headerSweep 6.5s ease-in-out infinite;
-}
-@keyframes headerSweep{
-  0%{ left:-60%; opacity:0; }
-  12%{ opacity:1; }
-  45%{ left:120%; opacity:0.9; }
-  100%{ left:120%; opacity:0; }
-}
-
-/* ---------- Sections/cards: “premium glass cards” + top gradient border ---------- */
-
-
-/* top neon border (gives color without being loud) */
-.student-info::before, .profile-section::before, .lessons-section::before, .goals-section::before, .section-card::before{
-  content:"";
-  position:absolute;
-  left: 0;
-  top: 0;
-  height: 4px;
-  width: 100%;
-  background: linear-gradient(90deg, var(--p1), var(--p2), var(--p4), var(--p3));
-  opacity: 0.95;
-}
-
-/* ---------- Titles: gradient text + underline ---------- */
-h2{
-  position: relative;
-  margin-bottom: 12px;
-  letter-spacing: 0.2px;
-  background: linear-gradient(90deg, var(--ink), rgba(11,18,32,0.65));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-h2::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:-6px;
-  width: 78px;
-  height: 5px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--p1), var(--p2));
-  box-shadow: 0 10px 22px rgba(37,99,235,0.18);
-}
-
-/* ---------- Inputs: soft glass + clear focus ring ---------- */
-input, textarea, select{
-  border: 1px solid rgba(148,163,184,0.50);
-  background: rgba(255,255,255,0.88);
-  border-radius: 12px;
-  padding: 10px 12px;
-  transition: 0.18s ease;
-  color: var(--ink);
-}
-
-input:focus, textarea:focus, select:focus{
-  outline: none;
-  border-color: rgba(167,139,250,0.90);
-  box-shadow:
-    0 0 0 4px rgba(167,139,250,0.18),
-    0 14px 30px rgba(15,23,42,0.12);
-}
-
-/* ---------- Buttons: “pill + gradient + glow” ---------- */
-button{
-  background: linear-gradient(135deg, var(--p1), var(--p2));
-  color: white;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 16px;
-  cursor: pointer;
-  box-shadow: 0 14px 28px rgba(37,99,235,0.20);
-  transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
-}
-
-button:hover{
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-  box-shadow: 0 18px 40px rgba(37,99,235,0.24);
-}
-
-button:active{
-  transform: translateY(0px) scale(0.99);
-}
-
-/* Danger buttons */
-.delete-btn, button.delete, button.remove{
-  background: linear-gradient(135deg, #ef4444, #b91c1c);
-  box-shadow: 0 14px 28px rgba(239,68,68,0.22);
-}
-
-/* ---------- Lesson cards: neon side rail + hover lift ---------- */
-
-
-/* neon rail */
-
-
-/* ---------- Notes: “premium sticky” + tiny tape effect ---------- */
-
-
 /* tape */
 .note::after{
   content:"";
@@ -630,30 +430,17 @@ button:active{
   opacity: 0.9;
 }
 
-/* ---------- Modals: cinematic + cleaner box ---------- */
-.modal{
-  background: rgba(2,6,23,0.56);
-  backdrop-filter: blur(7px);
-}
-.modal_content{
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.22);
-  background: linear-gradient(180deg, rgba(230, 229, 219, 0.88), rgba(255,255,255,0.66));
-  box-shadow: 0 30px 70px rgba(0,0,0,0.32);
-}
-
-/* ---------- Footer ---------- */
+/* FOOTER */
 footer, .app-footer{
-  color: rgba(15,23,42,0.58);
   text-align: center;
+  padding: 12px 10px;
+  font-size: 13px;
+  color: rgba(15,23,42,0.58);
+  background: transparent;
 }
 
-/* ---------- Mobile tweaks ---------- */
+/* Mobile tweaks (kept same breakpoint) */
 @media (max-width: 750px){
-  header{
-    border-radius: 16px;
-  }
-  button{
-    border-radius: 999px;
-  }
+  header{ border-radius: 16px; }
+  button{ border-radius: 999px; }
 }
